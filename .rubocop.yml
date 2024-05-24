@@ -1,0 +1,5 @@
+inherit_gem:
+  makandra-rubocop: config/default.yml
+
+Bundler/OrderedGems:
+  Enabled: true
