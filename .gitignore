@@ -9,3 +9,4 @@
 secrets.yml
 /runtime/volume/
 /runtime/fixtures/
+/runtime/examples/

@@ -110,7 +110,7 @@ module Kwrix
               type: 'function',
               function: {
                 name: 'docker_exec',
-                description: 'Execute the given command within the docker container',
+                description: 'Execute the given command within a docker container with access to the internet',
                 parameters: {
                   type: :object,
                   properties: {
