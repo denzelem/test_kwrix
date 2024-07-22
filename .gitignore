@@ -8,3 +8,4 @@
 
 secrets.yml
 /runtime/volume/
+/runtime/fixtures/

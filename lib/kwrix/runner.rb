@@ -37,14 +37,18 @@ module Kwrix
       @thread_id = open_ai_start_thread
     end
 
-    def run
+    def clean
       build_docker_image
       start_docker_container
-      # open_ai_message('Can you convert the flight.jpg to a PNG image?')
-      # open_ai_message('I recently visited https://makandra.de/en/our-team-20. Can you help me to name all employees of this company?')
-      # open_ai_message('Can you tell me the weather for Augsburg?')
-      # open_ai_message('Can you send an email to test@example.com with the subject hello word and the content it works?')
-      raise('Uncomment a message below')
+      clean_up_docker_volumes
+    ensure
+      kwirx_system('docker', 'stop', CONTAINER_NAME)
+    end
+
+    def run(prompt)
+      build_docker_image
+      start_docker_container
+      open_ai_message(prompt)
 
       puts open_ai_create_and_retrieve_run # All answers combined
     ensure
@@ -62,6 +66,10 @@ module Kwrix
     # For testing use: docker run --rm --interactive --tty --name kwrix_container --volume ./runtime/volume:/usr/src/app kwrix bash
     def start_docker_container
       kwirx_system('docker', 'run', '--rm', '--detach', '--tty', '--name', CONTAINER_NAME, '--volume', "#{VOLUME_HOST_PATH}:#{VOLUME_CONTAINER_PATH}", IMAGE_NAME, 'bash')
+    end
+
+    def clean_up_docker_volumes
+      kwirx_system('docker', 'exec', CONTAINER_NAME, 'bash', '-c', %(find #{VOLUME_CONTAINER_PATH} ! -name "*.keep" -type f -delete))
     end
 
     def execute_docker_command(command:)
