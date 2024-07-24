@@ -5,12 +5,12 @@ module Kwrix
     IMAGE_NAME = 'kwrix_image'.freeze
     CONTAINER_NAME = 'kwrix_container'.freeze
     VOLUME_HOST_PATH = Kwrix.root.join('runtime', 'volume').to_s
-    VOLUME_CONTAINER_PATH = '/usr/src/app'
+    VOLUME_CONTAINER_PATH = '/usr/src/app'.freeze
     ASSISTANT_NAME = 'Kwrix assistant'.freeze
     ASSISTANT_DESCRIPTION = 'Assistant that uses a docker container for command execution'.freeze
-    ASSISTANT_INSTRUCTIONS = <<~TEXT
+    ASSISTANT_INSTRUCTIONS = <<~TEXT.freeze
       You are a bot with a docker container execution environment.
-      The Dockerfile has the following content: 
+      The Dockerfile has the following content:
       #{File.read(Kwrix.root.join('runtime', 'Dockerfile'))}
 
       In case you expect a file, please search for it in the mounted docker volume e.g. image.jpg will be present in #{VOLUME_CONTAINER_PATH}.
@@ -170,7 +170,7 @@ module Kwrix
                 raise ArgumentError, "Unknown function: #{function_name}"
               end
 
-              raise ArgumentError, "Missing tool_output" if tool_output.nil?
+              raise ArgumentError, 'Missing tool_output' if tool_output.nil?
 
               { tool_call_id: tool['id'], output: tool_output.last(TOOL_OUTPUT_TRUNCATE_LIMIT) }
             end
